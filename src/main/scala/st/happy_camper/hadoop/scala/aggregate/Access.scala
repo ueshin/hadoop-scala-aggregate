@@ -21,7 +21,6 @@ import _root_.org.apache.commons.lang.builder._
 
 /**
  * @author ueshin
- *
  */
 class Access(val ip: String, val url: String, val accessDate: Date) extends Comparable[Access] {
 

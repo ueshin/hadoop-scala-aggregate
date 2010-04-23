@@ -22,7 +22,6 @@ import _root_.org.apache.hadoop.io._
 
 /**
  * @author ueshin
- *
  */
 class AccessWritable extends WritableComparable[AccessWritable] {
 

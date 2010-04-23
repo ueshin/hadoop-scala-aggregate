@@ -3,27 +3,105 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>st.happy_camper.hadoop.scala</groupId>
 	<artifactId>hadoop-scala-aggregate</artifactId>
+	<packaging>jar</packaging>
+	<name>hadoop-scala-aggregate</name>
 	<version>0.20.1-SNAPSHOT</version>
 	<inceptionYear>2010</inceptionYear>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<organization>
+		<name>Happy-Camper Street</name>
+		<url>http://happy-camper.st/</url>
+	</organization>
+	<developers>
+		<developer>
+			<id>ueshin</id>
+			<name>Takuya Ueshin</name>
+			<email>ueshin@happy-camper.st</email>
+			<url>http://ueshin.happy-camper.st/</url>
+			<organization>Happy-Camper Street</organization>
+			<timezone>+9</timezone>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:svn:https://happy-camper.st/svn/hadoop/trunk/hadoop-scala-aggregate</connection>
+		<developerConnection>scm:svn:https://happy-camper.st/svn/hadoop/trunk/hadoop-scala-aggregate</developerConnection>
+		<url>http://hadoop.happy-camper.st/browser/trunk/hadoop-scala-aggregate</url>
+	</scm>
+	<issueManagement>
+		<system>trac</system>
+		<url>http://hadoop.happy-camper.st/</url>
+	</issueManagement>
+
 	<properties>
 		<scala.version>2.8.0.Beta1</scala.version>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>scala-tools.org</id>
-			<name>Scala-Tools Maven2 Repository</name>
-			<url>http://scala-tools.org/repo-releases</url>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>scala-tools.org</id>
-			<name>Scala-Tools Maven2 Repository</name>
-			<url>http://scala-tools.org/repo-releases</url>
-		</pluginRepository>
-	</pluginRepositories>
+	<build>
+		<sourceDirectory>src/main/scala</sourceDirectory>
+		<testSourceDirectory>src/test/scala</testSourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.scala-tools</groupId>
+				<artifactId>maven-scala-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>compile</goal>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+						<phase>package</phase>
+					</execution>
+				</executions>
+				<configuration>
+					<extraJvmArguments>-server -Xmx512m</extraJvmArguments>
+					<configurationDirectory>conf</configurationDirectory>
+					<repositoryLayout>flat</repositoryLayout>
+					<repositoryName>lib</repositoryName>
+					<programs>
+						<program>
+							<mainClass>st.happy_camper.hadoop.scala.aggregate.Aggregator</mainClass>
+							<name>aggregator</name>
+						</program>
+					</programs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<buildcommands>
+						<buildcommand>ch.epfl.lamp.sdt.core.scalabuilder</buildcommand>
+					</buildcommands>
+					<additionalProjectnatures>
+						<projectnature>ch.epfl.lamp.sdt.core.scalanature</projectnature>
+					</additionalProjectnatures>
+					<classpathContainers>
+						<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+						<classpathContainer>ch.epfl.lamp.sdt.launching.SCALA_CONTAINER</classpathContainer>
+					</classpathContainers>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<dependencies>
 		<dependency>
@@ -138,75 +216,39 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<sourceDirectory>src/main/scala</sourceDirectory>
-		<testSourceDirectory>src/test/scala</testSourceDirectory>
-		<plugins>
-			<plugin>
-				<groupId>org.scala-tools</groupId>
-				<artifactId>maven-scala-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>testCompile</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>appassembler-maven-plugin</artifactId>
-				<version>1.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>assemble</goal>
-						</goals>
-						<phase>package</phase>
-					</execution>
-				</executions>
-				<configuration>
-					<extraJvmArguments>-server -Xmx512m</extraJvmArguments>
-					<configurationDirectory>conf</configurationDirectory>
-					<repositoryLayout>flat</repositoryLayout>
-					<repositoryName>lib</repositoryName>
-					<programs>
-						<program>
-							<mainClass>st.happy_camper.hadoop.scala.aggregate.Aggregator</mainClass>
-							<name>aggregator</name>
-						</program>
-					</programs>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<downloadSources>true</downloadSources>
-					<buildcommands>
-						<buildcommand>ch.epfl.lamp.sdt.core.scalabuilder</buildcommand>
-					</buildcommands>
-					<additionalProjectnatures>
-						<projectnature>ch.epfl.lamp.sdt.core.scalanature</projectnature>
-					</additionalProjectnatures>
-					<classpathContainers>
-						<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
-						<classpathContainer>ch.epfl.lamp.sdt.launching.SCALA_CONTAINER</classpathContainer>
-					</classpathContainers>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.scala-tools</groupId>
-				<artifactId>maven-scala-plugin</artifactId>
-				<configuration>
-					<scalaVersion>${scala.version}</scalaVersion>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
+	<repositories>
+		<repository>
+			<id>scala-tools.org</id>
+			<name>Scala-Tools Maven2 Repository</name>
+			<url>http://scala-tools.org/repo-releases</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>scala-tools.org</id>
+			<name>Scala-Tools Maven2 Repository</name>
+			<url>http://scala-tools.org/repo-releases</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<distributionManagement>
+		<repository>
+			<id>maven.hadoop.happy-camper.st</id>
+			<name>hadoop : Happy-Camper Street Maven2 Repository</name>
+			<url>
+				scp://hadoop.happy-camper.st:2222/home/www/htdocs.hadoop.happy-camper.st/maven2 
+			</url>
+			<uniqueVersion>false</uniqueVersion>
+		</repository>
+		<snapshotRepository>
+			<id>snapshot.maven.hadoop.happy-camper.st</id>
+			<name>hadoop : Happy-Camper Street Maven2 SNAPSHOT Repository</name>
+			<url>
+				scp://hadoop.happy-camper.st:2222/home/www/htdocs.hadoop.happy-camper.st/maven2-snapshot 
+			</url>
+			<uniqueVersion>true</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
+
 </project>

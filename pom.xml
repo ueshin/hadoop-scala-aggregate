@@ -1,11 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>st.happy_camper.hadoop.scala</groupId>
 	<artifactId>hadoop-scala-aggregate</artifactId>
 	<packaging>jar</packaging>
 	<name>hadoop-scala-aggregate</name>
-	<version>0.20.1-SNAPSHOT</version>
+	<version>0.20.1</version>
 	<inceptionYear>2010</inceptionYear>
 	<licenses>
 		<license>
@@ -29,9 +28,9 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:https://happy-camper.st/svn/hadoop/trunk/hadoop-scala-aggregate</connection>
-		<developerConnection>scm:svn:https://happy-camper.st/svn/hadoop/trunk/hadoop-scala-aggregate</developerConnection>
-		<url>http://hadoop.happy-camper.st/browser/trunk/hadoop-scala-aggregate</url>
+		<connection>scm:svn:https://happy-camper.st/svn/hadoop/tags/hadoop-scala-aggregate-0.20.1</connection>
+		<developerConnection>scm:svn:https://happy-camper.st/svn/hadoop/tags/hadoop-scala-aggregate-0.20.1</developerConnection>
+		<url>http://hadoop.happy-camper.st/browser/tags/hadoop-scala-aggregate-0.20.1</url>
 	</scm>
 	<issueManagement>
 		<system>trac</system>

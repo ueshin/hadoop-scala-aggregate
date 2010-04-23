@@ -4,7 +4,7 @@
 	<artifactId>hadoop-scala-aggregate</artifactId>
 	<packaging>jar</packaging>
 	<name>hadoop-scala-aggregate</name>
-	<version>0.20.1</version>
+	<version>0.20.2-SNAPSHOT</version>
 	<inceptionYear>2010</inceptionYear>
 	<licenses>
 		<license>
@@ -28,9 +28,9 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:https://happy-camper.st/svn/hadoop/tags/hadoop-scala-aggregate-0.20.1</connection>
-		<developerConnection>scm:svn:https://happy-camper.st/svn/hadoop/tags/hadoop-scala-aggregate-0.20.1</developerConnection>
-		<url>http://hadoop.happy-camper.st/browser/tags/hadoop-scala-aggregate-0.20.1</url>
+		<connection>scm:svn:https://happy-camper.st/svn/hadoop/trunk/hadoop-scala-aggregate</connection>
+		<developerConnection>scm:svn:https://happy-camper.st/svn/hadoop/trunk/hadoop-scala-aggregate</developerConnection>
+		<url>http://hadoop.happy-camper.st/browser/trunk/hadoop-scala-aggregate</url>
 	</scm>
 	<issueManagement>
 		<system>trac</system>

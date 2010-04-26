@@ -23,9 +23,9 @@ import _root_.org.apache.hadoop.io._
 /**
  * @author ueshin
  */
-class AccessWritable extends WritableComparable[AccessWritable] {
+class AccessWritable(var access: Access) extends WritableComparable[AccessWritable] {
 
-  var access: Access = null
+  def this() = this(null)
 
   def write(out: DataOutput) {
     WritableUtils.writeString(out, access.ip)

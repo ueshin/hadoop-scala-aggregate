@@ -95,6 +95,8 @@ object Aggregator extends Configured with Tool {
   def run(args: Array[String]) = {
     val job = new Job(getConf, "aggregator")
 
+    job.setJarByClass(getClass)
+
     FileInputFormat.setInputPaths(job, args(0))
     FileOutputFormat.setOutputPath(job, new Path(args(1)))
 

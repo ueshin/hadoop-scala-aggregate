@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 Happy-Camper Street.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package st.happy_camper.hadoop.scala.aggregate
 
 import _root_.scala.collection.JavaConversions._
@@ -14,27 +29,29 @@ import _root_.org.apache.hadoop.mapreduce.lib.input._
 import _root_.org.apache.hadoop.mapreduce.lib.output._
 import _root_.org.apache.hadoop.util._
 
+/**
+ * @author ueshin
+ */
 object Aggregator extends Configured with Tool {
 
   private class Map extends Mapper[LongWritable, Text, AccessWritable, IntWritable] {
+
+    type Context = Mapper[LongWritable, Text, AccessWritable, IntWritable]#Context
+
+    implicit def accessToAccessWritable(access: Access) = new AccessWritable(access)
+    implicit def intToIntWritable(i: Int) = new IntWritable(i)
 
     private val PATTERN = ("^(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}) .* " +
                         "\\[(\\d{2}/[A-Z][a-z][a-z]/\\d{4}):\\d{2}:\\d{2}:\\d{2} [-+]\\d{4}\\] " +
                         "\"GET ((?:/[^ ]*)?/(?:[^/]+\\.html)?) HTTP/1\\.[01]\" (?:200|304) .*$").r
 
-    private val access = new AccessWritable
-    private val one = new IntWritable(1)
+    private val one = 1
 
-    override def map(
-       key: LongWritable,
-       value: Text,
-       context: Mapper[LongWritable, Text, AccessWritable, IntWritable]#Context
-     ) {
+    override def map(key: LongWritable, value: Text, context: Context) {
        value.toString match {
          case PATTERN(ip, accessDate, url) => {
            try {
-             access.access = new Access(ip, if(url.endsWith("/")) { url + "index.html" } else { url }, dateFormat.parse(accessDate))
-             context.write(access, one)
+             context.write(new Access(ip, if(url.endsWith("/")) { url + "index.html" } else { url }, dateFormat.parse(accessDate)), one)
            }
            catch {
              case e: ParseException => e.printStackTrace()
@@ -49,25 +66,26 @@ object Aggregator extends Configured with Tool {
 
   private class Combine extends Reducer[AccessWritable, IntWritable, AccessWritable, IntWritable] {
 
-    override def reduce(
-      key: AccessWritable,
-      values: java.lang.Iterable[IntWritable],
-      context: Reducer[AccessWritable, IntWritable, AccessWritable, IntWritable]#Context
-    ) {
-      context.write(key, new IntWritable(values.foldLeft(0) { _ + _.get }))
+    type Context = Reducer[AccessWritable, IntWritable, AccessWritable, IntWritable]#Context
+
+    implicit def intToIntWritable(i: Int) = new IntWritable(i)
+
+    override def reduce(key: AccessWritable, values: java.lang.Iterable[IntWritable], context: Context) {
+      context.write(key, values.foldLeft(0) { _ + _.get })
     }
   }
 
   private class Reduce extends Reducer[AccessWritable, IntWritable, Text, IntWritable] {
 
-    override def reduce(
-      key: AccessWritable,
-      values: java.lang.Iterable[IntWritable],
-      context: Reducer[AccessWritable, IntWritable, Text, IntWritable]#Context
-    ) {
+    type Context = Reducer[AccessWritable, IntWritable, Text, IntWritable]#Context
+
+    implicit def stringToText(str: String) = new Text(str)
+    implicit def intToIntWritable(i: Int) = new IntWritable(i)
+
+    override def reduce(key: AccessWritable, values: java.lang.Iterable[IntWritable], context: Context) {
       context.write(
-        new Text("%s\t%s\t%s".format(key.access.ip, key.access.url, dateFormat.format(key.access.accessDate))),
-        new IntWritable(values.foldLeft(0) { _ + _.get })
+        "%s\t%s\t%s".format(key.access.ip, key.access.url, dateFormat.format(key.access.accessDate)),
+        values.foldLeft(0) { _ + _.get }
       )
     }
 
@@ -76,6 +94,8 @@ object Aggregator extends Configured with Tool {
 
   def run(args: Array[String]) = {
     val job = new Job(getConf, "aggregator")
+
+    job.setJarByClass(getClass)
 
     FileInputFormat.setInputPaths(job, args(0))
     FileOutputFormat.setOutputPath(job, new Path(args(1)))
